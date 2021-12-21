@@ -143,12 +143,14 @@
     <ClCompile Include="HashItem.cpp" />
     <ClCompile Include="HashItemNode.cpp" />
     <ClCompile Include="HashTable.cpp" />
+    <ClCompile Include="HashTableNodeProxy.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HashItem.h" />
     <ClInclude Include="HashItemNode.h" />
     <ClInclude Include="HashTable.h" />
+    <ClInclude Include="HashTableNodeProxy.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>

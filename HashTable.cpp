@@ -197,6 +197,11 @@ HashTable& HashTable::operator=(HashTable&& h) noexcept
 	return *this;
 }
 
+HashTableNodeProxy HashTable::operator[](type_key key)
+{
+	return HashTableNodeProxy{ this, key };
+}
+
 std::ostream& operator<<(std::ostream& os, const HashTable& t)
 {
 	bool is_first = true;

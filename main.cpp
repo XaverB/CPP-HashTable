@@ -45,11 +45,11 @@ void test_put_get() {
 	cout << "2. Testing put / get with collissions" << endl;
 	// collisions -> hashtable will use chaining internal
 	for (int i = 1; i < size + 1; i++) {
-		t1.put(i*100, std::to_string(i) + collision_postfix);
+		t1.put(i * 100, std::to_string(i) + collision_postfix);
 	}
 
 	for (int i = 1; i < size + 1; i++) {
-		auto value = t1.get(i*100);
+		auto value = t1.get(i * 100);
 		assert_equal(std::to_string(i) + collision_postfix, value);
 	}
 
@@ -87,14 +87,14 @@ void test_clear() {
 	cout << "2. Testing clear with collissions " << endl;
 	for (int i = 1; i < size + 1; i++) {
 		t1.put(i, std::to_string(i));
-		t1.put(i*100, std::to_string(i));
+		t1.put(i * 100, std::to_string(i));
 	}
 
 	t1.clear();
 	for (int i = 1; i < size + 1; i++) {
 		auto value = t1.get(i);
 		assert_equal(default_value, value);
-		value = t1.get(i*100);
+		value = t1.get(i * 100);
 		assert_equal(default_value, value);
 	}
 }
@@ -118,11 +118,11 @@ void test_contains() {
 
 	cout << "2. Testing contains with collissions" << endl;
 	for (int i = 1; i < size + 1; i++) {
-		t1.put(i*100, std::to_string(i));
+		t1.put(i * 100, std::to_string(i));
 	}
 
 	for (int i = 1; i < size + 1; i++) {
-		auto contains_value = t1.contains(i*100);
+		auto contains_value = t1.contains(i * 100);
 		assert_true(contains_value);
 
 		contains_value = t1.contains(i * 1);
@@ -153,11 +153,11 @@ void test_contains_value() {
 
 	cout << "2. Testing contains value with collissions" << endl;
 	for (int i = 1; i < size + 1; i++) {
-		t1.put(i * 100, std::to_string(i*100));
+		t1.put(i * 100, std::to_string(i * 100));
 	}
 
 	for (int i = 1; i < size + 1; i++) {
-		auto contains_value = t1.contains_value(std::to_string(i*100));
+		auto contains_value = t1.contains_value(std::to_string(i * 100));
 		assert_true(contains_value);
 
 		contains_value = t1.contains_value(std::to_string(i));
@@ -245,6 +245,33 @@ void test_assignment_copy_move() {
 	assert_true(t7 != t5);
 }
 
+void test_index_operator() {
+	cout << "=== === === test index operator === === ===" << endl;
+	const int size = 10;
+	const auto default_value = type_value{};
+	HashTable t1{ size };
+
+	cout << "1. Testing index operator without collission " << endl;
+	for (int i = 1; i < size + 1; i++) {
+		t1[i] = std::to_string(i);
+	}
+
+	for (int i = 1; i < size + 1; i++) {
+		auto value = t1[i];
+		assert_equal(std::to_string(i), value);
+	}
+
+	cout << "2. Testing index operator with collission " << endl;
+	for (int i = 1; i < size + 1; i++) {
+		t1[i*100] = std::to_string(i*100);
+	}
+
+	for (int i = 1; i < size + 1; i++) {
+		auto value = t1[i*100];
+		assert_equal(std::to_string(i*100), value);
+	}
+}
+
 int main() {
 	test_put_get();
 	cout << endl;
@@ -262,5 +289,9 @@ int main() {
 	cout << endl;
 
 	test_assignment_copy_move();
-  return 0; 
+	cout << endl;
+
+	test_index_operator();
+
+	return 0;
 }
