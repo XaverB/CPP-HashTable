@@ -32,7 +32,7 @@ void HashTable::rehash()
 
 type_key HashTable::compute_hash(type_key key)
 {
-	// improve hashing algorithmus
+	// TODO improve hashing algorithmus
 	return key % size;
 }
 
