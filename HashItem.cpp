@@ -16,6 +16,17 @@ HashItem& HashItem::operator=(const HashItem& other)
 	return *this;
 }
 
+bool operator==(const HashItem& left_i, const HashItem& right_i)
+{
+	if (&left_i == nullptr && &right_i == nullptr)
+		return true;
+	if (&left_i == nullptr || &right_i == nullptr)
+		return false;
+
+	return left_i.get_key() == right_i.get_key() 
+		&& left_i.get_value() == right_i.get_value();
+}
+
 std::ostream& operator<<(ostream& os, const HashItem& i)
 {
 	if(&i != nullptr)

@@ -5,16 +5,11 @@
 // copy constructor
 HashItemNode::HashItemNode(const HashItemNode& h) : next(nullptr), value(nullptr)
 {
-	// ugh
 	if (h != nullptr) {
 		next = new HashItemNode{ *h.getNext() };
 		auto item = &(*h.getValue());
 
 		value = item == nullptr ? nullptr : new HashItem{ *h.getValue() };
-	}
-	else {
-		next = nullptr;
-		value = nullptr;
 	}
 }
 
@@ -31,6 +26,7 @@ bool HashItemNode::exists(const std::function<bool(HashItem* item)> predicate)
 
 void HashItemNode::add(HashItem* item)
 {
+	// TODO: preappend so we don't need to iterate through the whole list
 	auto node = this;
 	while (node->next != nullptr) {;
 		node = node->getNext();
@@ -62,12 +58,15 @@ bool operator==(const HashItemNode& left_h, const HashItemNode& right_h)
 		return true;
 	}
 
-	while (node1 != nullptr /*&& node2 != nullptr*/) {
-		//if (*node1 != *node2)
-		//	return false;
+	while (node1 != nullptr) {
+		// this will check the pointers (to handle node2 nullptrs)
+		if (node2 == nullptr)
+			return false;
 
 		auto item1 = node1->getValue();
 		auto item2 = node2->getValue();
+
+		// TODO improve conditions
 		if (item1 == nullptr && item2 != nullptr)
 			return false;
 		if (item1 != nullptr && item2 == nullptr)

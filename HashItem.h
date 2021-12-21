@@ -26,15 +26,8 @@ public:
 
 	HashItem& operator=(const HashItem& other);
 
-	friend bool operator==(const HashItem& left_i, const HashItem& right_i) /*  inline */
-	{
-		if (&left_i == nullptr && &right_i == nullptr)
-			return true;
-		if (&left_i == nullptr || &right_i == nullptr)
-			return false;
-
-		return left_i.get_key() == right_i.get_key() && left_i.get_value() == right_i.get_value();
-	};
+	friend bool operator==(const HashItem& left_i, const HashItem& right_i);
+	
 
 	friend bool  operator!=(const HashItem& left_i, const HashItem& right_i) /*  inline */
 	{

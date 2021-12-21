@@ -12,11 +12,13 @@ using type_value = std::string;
 class HashTable
 {
 private:
-	int max_filling_level_percentage = 50;
+	const float default_load_factor = 0.75;
 	int size;
+	int element_count;
 	std::unique_ptr<HashItemNode*[]> data;
 
 	void init_hashtable();
+	void rehash_if_necessary();
 	void rehash();
 	type_key compute_hash(type_key key);
 
