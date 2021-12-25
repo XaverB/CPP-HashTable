@@ -266,16 +266,16 @@ void test_index_operator() {
 
 	cout << "2. Testing index operator with collission " << endl;
 	for (int i = 1; i < size + 1; i++) {
-		t1[i*100] = std::to_string(i*100);
+		t1[i * 100] = std::to_string(i * 100);
 	}
 
 	for (int i = 1; i < size + 1; i++) {
-		auto value = t1[i*100];
-		assert_equal(std::to_string(i*100), value);
+		auto value = t1[i * 100];
+		assert_equal(std::to_string(i * 100), value);
 	}
 }
 
-int main() {
+void run_tests() {
 	test_put_get();
 	cout << endl;
 
@@ -295,6 +295,12 @@ int main() {
 	cout << endl;
 
 	test_index_operator();
+}
+
+int main() {
+	cout << "=== === === Test runner started === === ===" << endl;
+	run_tests();
+	cout << endl;
 
 	return 0;
 }
