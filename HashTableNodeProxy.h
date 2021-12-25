@@ -2,22 +2,31 @@
 
 #include <string>
 
+// template forward declaration
+template <typename K, typename V>
 class HashTable;
 
-using type_key = int;
-using type_value = std::string;
-
+template <typename K, typename V>
 class HashTableNodeProxy
 {
 private:
-	HashTable* table;
-	type_key key;
+	HashTable<K, V>* table;
+	K key;
 
 public:
-	HashTableNodeProxy(HashTable* table, type_key key);
+	HashTableNodeProxy(HashTable<K, V>* table, const K key) : table(table), key(key)
+	{
+	}
 
-	const type_value& operator = (const type_value& value);
-	operator type_value() const;
+	const V& operator=(const V& value)
+	{
+		table->put(key, value);
+		return table->get(key);
+	}
 
+	operator V() const
+	{
+		return table->get(key);
+	}
 };
 

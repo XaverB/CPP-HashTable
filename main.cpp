@@ -9,6 +9,9 @@ using std::cout;
 using std::endl;
 using std::string;
 
+using type_key = int;
+using type_value = string;
+
 const string red_prefix = "\x1B[31m";
 const string red_postfix = "\033[0m";
 
@@ -29,7 +32,7 @@ void test_put_get() {
 	const int size = 10;
 	const string collision_postfix = "_c";
 	auto default_value = type_value{};
-	HashTable t1{ size };
+	HashTable<type_key, type_value> t1{ size };
 
 	cout << "1. Testing put / get without collissions " << endl;
 	// no collisions
@@ -71,7 +74,7 @@ void test_clear() {
 	cout << "=== === === test clear === === ===" << endl;
 	const int size = 10;
 	const auto default_value = type_value{};
-	HashTable t1{ size };
+	HashTable<type_key, type_value> t1{ size };
 
 	cout << "1. Testing clear without collissions " << endl;
 	for (int i = 1; i < size + 1; i++) {
@@ -104,7 +107,7 @@ void test_contains() {
 	cout << "=== === === test contains === === ===" << endl;
 	const int size = 10;
 	const auto default_value = type_value{};
-	HashTable t1{ size };
+	HashTable<type_key, type_value> t1{ size };
 
 	cout << "1. Testing contains without collissions " << endl;
 	for (int i = 1; i < size + 1; i++) {
@@ -139,7 +142,7 @@ void test_contains_value() {
 	cout << "=== === === test contains value === === ===" << endl;
 	const int size = 10;
 	const auto default_value = type_value{};
-	HashTable t1{ size };
+	HashTable<type_key, type_value> t1{ size };
 
 	cout << "1. Testing contains value without collissions " << endl;
 	for (int i = 1; i < size + 1; i++) {
@@ -174,7 +177,7 @@ void test_print() {
 	cout << "=== === === test print === === ===" << endl;
 	const int size = 10;
 	const auto default_value = type_value{};
-	HashTable t1{ size };
+	HashTable<type_key, type_value> t1{ size };
 
 	cout << "1. Testing print without collissions " << endl;
 	for (int i = 1; i < size + 1; i++) {
@@ -194,13 +197,13 @@ void test_assignment_copy_move() {
 	cout << "=== === === test assignment copy move === === ===" << endl;
 	const int size = 10;
 	const auto default_value = type_value{};
-	HashTable t1{ size };
+	HashTable<type_key, type_value> t1{ size };
 
 	cout << "1. Testing asignment without collissions " << endl;
 	for (int i = 1; i < size + 1; i++) {
 		t1.put(i, std::to_string(i));
 	}
-	HashTable t2 = t1;
+	HashTable<type_key, type_value> t2 = t1;
 	assert_true(t1 == t2);
 	cout << t1 << endl;
 	cout << t2 << endl;
@@ -210,25 +213,25 @@ void test_assignment_copy_move() {
 		t1.put(i * 100, std::to_string(i * 100));
 	}
 
-	HashTable t3 = t1;
+	HashTable<type_key, type_value> t3 = t1;
 	assert_true(t1 == t3);
 	cout << t1 << endl;
 	cout << t3 << endl;
 
 	cout << "3. Testing copy without collissions " << endl;
-	HashTable t4(t2);
+	HashTable<type_key, type_value> t4(t2);
 	assert_true(t4 == t2);
 	cout << t2 << endl;
 	cout << t4 << endl;
 
 	cout << "4. Testing copy with collissions" << endl;
-	HashTable t5{ t4 };
+	HashTable<type_key, type_value> t5{ t4 };
 	assert_true(t4 == t5);
 	cout << t4 << endl;
 	cout << t5 << endl;
 
 	cout << "5. Testing move without collissions" << endl;
-	HashTable t6(std::move(t2));
+	HashTable<type_key, type_value> t6(std::move(t2));
 	assert_true(t6 == t4);
 	cout << t6 << endl;
 	cout << t4 << endl;
@@ -237,7 +240,7 @@ void test_assignment_copy_move() {
 	assert_true(t6 != t2);
 
 	cout << "6. Testing move with collissions" << endl;
-	HashTable t7(std::move(t5));
+	HashTable<type_key, type_value> t7(std::move(t5));
 	assert_true(t7 == t4);
 	cout << t4 << endl;
 	cout << t7 << endl;
@@ -249,7 +252,7 @@ void test_index_operator() {
 	cout << "=== === === test index operator === === ===" << endl;
 	const int size = 10;
 	const auto default_value = type_value{};
-	HashTable t1{ size };
+	HashTable<type_key, type_value> t1{ size };
 
 	cout << "1. Testing index operator without collission " << endl;
 	for (int i = 1; i < size + 1; i++) {
