@@ -3,38 +3,71 @@
 #include <string>
 #include <ostream>
 
-using type_value = std::string;
-using type_key = int;
+using std::ostream;
 
 /// <summary>
 /// HashItem is our stored key and value pair
 /// </summary>
+/// 
+template <typename K, typename V>
 class HashItem
 {
+	using type_key = K;
+	using type_value = V;
+
 private:
 	type_key key;
 	type_value value;
 
 public:
-	HashItem(type_key key, type_value value) : key(key), value(value) {};
-	HashItem(const HashItem& item);
-	virtual ~HashItem() = default;
+	HashItem(const HashItem<K, V>& item)
+	{
+		this->key = item.get_key();
+		this->value = item.get_value();
+	}
 
-	type_value get_value() const  { return value; };/* const inline */
+	HashItem(type_key key, type_value value) : key(key), value(value) {};
+
+	HashItem<K, V>& operator=(const HashItem<K, V>& other)
+	{
+		HashItem<K, V> temp(other);
+		swap(*this, temp);
+		return *this;
+	}
+
+	type_value get_value() const { return value; };/* const inline */
 	type_key get_key() const { return key; }; /* const inline */
 	void set_value(type_value value) { this->value = value; }
 
-	HashItem& operator=(const HashItem& other);
+	friend bool operator==(const HashItem<K, V>& left_i, const HashItem<K, V>& right_i)
+	{
+		if (&left_i == nullptr && &right_i == nullptr)
+			return true;
+		if (&left_i == nullptr || &right_i == nullptr)
+			return false;
 
-	friend bool operator==(const HashItem& left_i, const HashItem& right_i);
-	
+		return left_i.get_key() == right_i.get_key()
+			&& left_i.get_value() == right_i.get_value();
+	}
 
-	friend bool  operator!=(const HashItem& left_i, const HashItem& right_i) /*  inline */
+	friend std::ostream& operator<<(ostream& os, const HashItem<K, V>& i)
+	{
+		if (&i != nullptr)
+			os << "[" << i.get_key() << ", " << i.get_value() << "]";
+		return os;
+	}
+
+	friend void swap(HashItem<K, V>& i1, HashItem<K, V>& i2)
+	{
+		using std::swap;
+		swap(i1.key, i2.key);
+		swap(i1.value, i2.value);
+	}
+
+
+	friend bool  operator!=(const HashItem<K, V>& left_i, const HashItem<K, V>& right_i)
 	{
 		return !(left_i == right_i);
 	};
-
-	friend std::ostream& operator<<(std::ostream& os, const HashItem& i);
-	friend void swap(HashItem& i1, HashItem& i2);
 };
 
