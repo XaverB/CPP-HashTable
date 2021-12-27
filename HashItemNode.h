@@ -17,20 +17,18 @@ private:
 public:
 	HashItemNode(HashItem<K, V>* item) : value(item), next(nullptr) {};
 
-	// copy constructor
 	HashItemNode<K, V>(const HashItemNode<K, V>& h) : next(nullptr), value(nullptr)
 	{
 		if (h != nullptr) {
 			next = new HashItemNode<K, V>{ *h.getNext() };
 			auto item = &(*h.getValue());
-
 			value = item == nullptr ? nullptr : new HashItem<K, V>{ *h.getValue() };
 		}
 	}
 
-	HashItem<K, V>* getValue() const { return value; } /*inline*/
-	HashItemNode<K, V>* getNext() const { return next; } /* inline*/
-	void setNext(HashItemNode<K, V>* next) { this->next = next; } /*  inline */
+	HashItem<K, V>* getValue() const { return value; }
+	HashItemNode<K, V>* getNext() const { return next; } 
+	void setNext(HashItemNode<K, V>* next) { this->next = next; }
 
 	bool exists(const std::function<bool(HashItem<K, V>* item)> predicate)
 	{
@@ -45,10 +43,8 @@ public:
 
 	void add(HashItem<K, V>* item)
 	{
-		// TODO: preappend so we don't need to iterate through the whole list
 		auto node = this;
 		while (node->next != nullptr) {
-			;
 			node = node->getNext();
 		}
 
@@ -66,6 +62,13 @@ public:
 			node = node->getNext();
 		}
 		return nullptr;
+	}
+
+	HashItemNode<K, V>& operator=(const HashItemNode<K, V>& other)
+	{
+		HashItemNode<K, V> temp(other);
+		swap(*this, temp);
+		return *this;
 	}
 
 	friend bool operator==(const HashItemNode<K, V>& left_h, const HashItemNode<K, V>& right_h)
@@ -86,23 +89,21 @@ public:
 			auto item1 = node1->getValue();
 			auto item2 = node2->getValue();
 
-			// TODO improve conditions
-			if (item1 == nullptr && item2 != nullptr)
-				return false;
-			if (item1 != nullptr && item2 == nullptr)
-				return false;
-
-			if (item1 != nullptr && item2 != nullptr && *item1 != *item2)
+			// this conditions represents a true logical XOR operation
+			if (!(item1 == nullptr) != !(item2 == nullptr))
 				return false;
 
 			node1 = node1->getNext();
 			node2 = node2->getNext();
 		}
-		//if (node1 != node2)
-		//	return false;
 
 		return true;
 	}
+
+	friend bool operator!=(const HashItemNode<K, V>& left_h, const HashItemNode<K, V>& right_h)
+	{
+		return !(left_h == right_h);
+	};
 
 	friend std::ostream& operator<<(std::ostream& os, const HashItemNode<K, V>& n)
 	{
@@ -123,19 +124,6 @@ public:
 		swap(i1.value, i2.value);
 	}
 
-	HashItemNode<K, V>& operator=(const HashItemNode<K, V>& other)
-	{
-		HashItemNode<K, V> temp(other);
-		swap(*this, temp);
-		return *this;
-	}
-
-
-	friend bool operator!=(const HashItemNode<K, V>& left_h, const HashItemNode<K, V>& right_h)
-	{
-		return !(left_h == right_h);
-	};
-
 	friend bool operator==(const HashItemNode<K, V>& left_i, const K& key)
 	{
 		return left_i.getValue()->get_key() == key;
@@ -145,5 +133,4 @@ public:
 	{
 		return !(operator==(left_i, key));
 	};
-
 };

@@ -27,16 +27,14 @@ private:
 	const float default_load_factor = 0.75;
 	int size;
 	int element_count;
-	std::unique_ptr<HashItemNode<K, V>*[]> data;
+	std::unique_ptr<HashItemNode<K, V>* []> data;
 
 	void init_hashtable()
 	{
 		data = make_unique<HashItemNode<K, V>* []>(size);
-		// maybe we don't need this manual nullptr initialization
 		for (int i = 0; i < size; i++) {
 			data[i] = nullptr;
 		}
-		// maybe add checks if memory was allocated?
 	}
 
 	void rehash_if_necessary()
@@ -77,24 +75,18 @@ public:
 	{
 	}
 
-	~HashTable()
-	{
-		// nothing to do thanks to smart pointer!
-	}
-
 	HashTable(const HashTable<K, V>& h)
 	{
 		size = h.size;
 		element_count = h.element_count;
+
 		init_hashtable();
 
 		for (int i = 0; i < size; i++) {
 			data[i] = new HashItemNode<K, V>{ *h.data[i] };
 		}
-
 	}
 
-	// move constructor
 	HashTable(HashTable<K, V>&& h)  noexcept : size(0), data(nullptr), element_count(0)
 	{
 		// this works, because we implemented the move assignment operator
@@ -193,7 +185,13 @@ public:
 		return false;
 	}
 
-	// move assignment
+	HashTable<K, V>& operator=(const HashTable<K, V>& h)
+	{
+		HashTable<K, V> temp(h);
+		swap(*this, temp);
+		return *this;
+	}
+
 	HashTable<K, V>& operator=(HashTable<K, V>&& h) noexcept
 	{
 		if (this != &h)
@@ -213,7 +211,7 @@ public:
 	{
 		return HashTableNodeProxy<K, V>{ this, key };
 	}
-	
+
 	template<typename K, typename V>
 	friend std::ostream& operator<<(std::ostream& os, const HashTable<K, V>& t)
 	{
@@ -258,13 +256,6 @@ public:
 	friend bool operator!=(const HashTable<K, V>& h1, const HashTable<K, V>& h2)
 	{
 		return !(h1 == h2);
-	}
-
-	HashTable<K, V>& operator=(const HashTable<K, V>& h)
-	{
-		HashTable<K, V> temp(h);
-		swap(*this, temp);
-		return *this;
 	}
 
 	template<typename K, typename V>
